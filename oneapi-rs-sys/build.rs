@@ -13,6 +13,7 @@ fn main() {
     println!("cargo::rustc-link-lib=sycl");
     println!("cargo::rustc-link-lib=ze_loader");
     println!("cargo::rustc-link-lib=intlc");
+
     println!("cargo::rerun-if-changed=include/shim.hpp");
     println!("cargo::rerun-if-changed=include/shim.cpp");
 }

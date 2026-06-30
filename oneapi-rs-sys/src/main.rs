@@ -2,6 +2,7 @@
 mod ffi {
     unsafe extern "C++" {
         include!("oneapi-rs-sys/include/shim.hpp");
+        
         #[namespace = "sycl"]
         type platform;
         fn get_platforms() -> UniquePtr<CxxVector<platform>>;
