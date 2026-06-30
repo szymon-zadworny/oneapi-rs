@@ -6,7 +6,9 @@ fn main() {
         .compiler(format!("{compiler_root}/bin/icpx"))
         .include(format!("{compiler_root}/include"))
         .flag("-fsycl")
-        .file("src/shim.cpp")
+        .files(&[
+            "src/platform.cpp"
+        ])
         .std("c++17")
         .compile("oneapi-shim");
 

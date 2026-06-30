@@ -1,17 +1,21 @@
-#[cxx::bridge]
-mod ffi {
+#[cxx::bridge(namespace = "sycl_shims")]
+mod sycl {
     unsafe extern "C++" {
-        include!("oneapi-rs-sys/include/shim.hpp");
-        
-        #[namespace = "sycl"]
-        type platform;
-        fn get_platforms() -> UniquePtr<CxxVector<platform>>;
-        fn get_name(p: &platform) -> UniquePtr<CxxString>;
+        include!("oneapi-rs-sys/include/platform.hpp");
+ 
+        type Platform;
+
+        #[Self = "Platform"]
+        fn get_platforms() -> UniquePtr<CxxVector<Platform>>;
+
+        fn get_version(&self) -> String;
+        fn get_name(&self) -> String;
+        fn get_vendor(&self) -> String;
     }
 }
 
 fn main() {
-    for platform in &*ffi::get_platforms() {
-        println!("{}", ffi::get_name(platform));
+    for platform in &*sycl::Platform::get_platforms() {
+        println!("[{}] [{}] [{}]", platform.get_version(), platform.get_name(), platform.get_vendor());
     }
 }
