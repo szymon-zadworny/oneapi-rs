@@ -161,6 +161,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "oneapi-rs"
+version = "0.1.0"
+dependencies = [
+ "oneapi-rs-sys",
+]
+
+[[package]]
 name = "oneapi-rs-sys"
 version = "0.1.0"
 dependencies = [
