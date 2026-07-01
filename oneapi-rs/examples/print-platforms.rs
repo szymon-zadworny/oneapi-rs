@@ -14,6 +14,6 @@ fn main() {
         println!("Platform:");
         println!("- Name: {}", platform.get_info::<Name>());
         println!("- Vendor: {}", platform.get_info::<Vendor>());
-        println!("- Vendor: {}", platform.get_info::<Vendor>());
+        println!("- Version: {}", platform.get_info::<Version>());
     }
 }

@@ -33,6 +33,6 @@ pub struct Vendor;
 impl PlatformInfo for Vendor {
     type Item = String;
     fn get_item(platform: &Platform) -> Self::Item {
-        platform.0.get_name()
+        platform.0.get_vendor()
     }
 }
