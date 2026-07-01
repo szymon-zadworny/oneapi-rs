@@ -3,7 +3,7 @@ fn main() {
         .expect("No valid OneAPI installation found.");
 
     cxx_build::bridges(&[
-            "src/platform.rs"
+            "src/platform-sys.rs"
         ])
         .compiler(format!("{compiler_root}/bin/icpx"))
         .include(format!("{compiler_root}/include"))
