@@ -45,4 +45,8 @@ DeviceType Device::get_device_type() const {
 rust::String Device::get_version() const {
   return this->inner.get_info<sycl::info::device::version>();
 }
+
+rust::String Device::get_name() const {
+  return this->inner.get_info<sycl::info::device::name>();
+}
 } // namespace sycl_shims

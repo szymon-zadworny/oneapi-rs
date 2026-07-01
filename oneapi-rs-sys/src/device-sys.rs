@@ -36,5 +36,6 @@ pub mod ffi {
 
         fn get_device_type(&self) -> DeviceType;
         fn get_version(&self) -> String;
+        fn get_name(&self) -> String;
     }
 }
