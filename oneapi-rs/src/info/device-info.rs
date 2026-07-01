@@ -28,3 +28,11 @@ impl DeviceInfo for Version {
         device.0.get_version()
     }
 }
+
+pub struct Name;
+impl DeviceInfo for Name {
+    type Item = String;
+    fn get_item(device: &Device) -> Self::Item {
+        device.0.get_name()
+    }
+}

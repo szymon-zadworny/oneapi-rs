@@ -12,6 +12,7 @@ use oneapi_rs::info::device::*;
 fn main() {
     for device in Device::get_devices() {
         println!("Device:");
+        println!("- Name: {}", device.get_info::<Name>());
         println!("- Version: {}", device.get_info::<Version>());
         println!("- Type: {:?}", device.get_info::<DeviceType>());
     }
