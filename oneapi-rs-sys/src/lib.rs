@@ -6,8 +6,8 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 //
 
-#[path = "opaque-sys.rs"]
-pub mod opaque;
+#[path = "types-sys.rs"]
+pub mod types;
 
 #[path = "platform-sys.rs"]
 pub mod platform;

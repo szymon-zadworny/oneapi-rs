@@ -10,18 +10,18 @@
 pub mod ffi {
     #[namespace = "sycl_shims"]
     extern "C++" {
-        include!("oneapi-rs-sys/src/opaque-sys.rs.h");
-        type DevicePtr = crate::opaque::ffi::DevicePtr;
-        type PlatformPtr = crate::opaque::ffi::PlatformPtr;
+        include!("oneapi-rs-sys/src/types-sys.rs.h");
+        type DevicePtr = crate::types::ffi::DevicePtr;
+        type PlatformPtr = crate::types::ffi::PlatformPtr;
     }
 
     unsafe extern "C++" {
         include!("oneapi-rs-sys/include/platform.hpp");
 
         #[namespace = "sycl_shims"]
-        type Device = crate::opaque::ffi::Device;
+        type Device = crate::types::ffi::Device;
         #[namespace = "sycl_shims"]
-        type Platform = crate::opaque::ffi::Platform;
+        type Platform = crate::types::ffi::Platform;
 
         fn get_platforms() -> Vec<PlatformPtr>;
 

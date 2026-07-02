@@ -9,7 +9,7 @@
 #[cxx::bridge(namespace = "sycl_shims")]
 pub mod ffi {
     unsafe extern "C++" {
-        include!("oneapi-rs-sys/include/opaque.hpp");
+        include!("oneapi-rs-sys/include/types.hpp");
         type Device;
         type Platform;
     }

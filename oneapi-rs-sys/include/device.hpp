@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "oneapi-rs-sys/include/opaque.hpp"
+#include "oneapi-rs-sys/include/types.hpp"
 #include "rust/cxx.h"
 
 #include <memory>

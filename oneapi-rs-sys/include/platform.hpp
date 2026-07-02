@@ -9,7 +9,7 @@
 #pragma once
 
 #include "rust/cxx.h"
-#include "oneapi-rs-sys/include/opaque.hpp"
+#include "oneapi-rs-sys/include/types.hpp"
 
 #include <sycl/sycl.hpp>
 
