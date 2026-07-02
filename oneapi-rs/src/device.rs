@@ -10,9 +10,17 @@ use oneapi_rs_sys::device::ffi;
 
 use crate::{info::device::DeviceInfo, platform::Platform};
 
+/// The `Device` struct encapsulates a single SYCL device on which kernels can be executed.
+///
+/// All member functions of the `Device` struct are synchronous and errors are handled by
+/// throwing synchronous SYCL exceptions.
+///
+/// The `Device` struct provides the common reference semantics.
 pub struct Device(pub(crate) cxx::UniquePtr<ffi::Device>);
 
 impl Device {
+    /// Returns a `Vec` containing all the root devices from all SYCL backends
+    /// available in the system which have the device type encapsulated by `DeviceType`.
     pub fn get_devices() -> Vec<Self> {
         ffi::get_devices()
             .into_iter()
@@ -20,10 +28,14 @@ impl Device {
             .collect()
     }
 
+    /// Queries this `Device` for information requested by the generic parameter `Param`.
+    /// The associated type `Param::Item` must be defined in accordance with the info parameters
+    /// in `oneapi_rs::info::device` to facilitate returning the type associated with the `Param` parameter.
     pub fn get_info<T: DeviceInfo>(&self) -> T::Item {
         T::get_item(self)
     }
 
+    /// Returns the associated SYCL platform.
     pub fn get_platform(&self) -> Platform {
         let raw_platform = ffi::get_platform(&self.0);
         Platform(raw_platform)

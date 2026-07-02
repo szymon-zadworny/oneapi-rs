@@ -12,4 +12,5 @@ pub mod platform;
 #[path = "./info/device-info.rs"]
 pub mod device;
 
+/// The type of the SYCL device.
 pub use oneapi_rs_sys::device::ffi::DeviceType;
