@@ -19,8 +19,8 @@ use crate::{info::device::DeviceInfo, platform::Platform};
 pub struct Device(pub(crate) cxx::UniquePtr<ffi::Device>);
 
 impl Device {
-    /// Returns a `Vec` containing all the root devices from all SYCL backends
-    /// available in the system which have the device type encapsulated by `DeviceType`.
+    /// Returns a [`Vec`] containing all the root devices from all SYCL backends
+    /// available in the system which have the device type encapsulated by [`DeviceType`](crate::info::DeviceType).
     pub fn get_devices() -> Vec<Self> {
         ffi::get_devices()
             .into_iter()
@@ -30,7 +30,8 @@ impl Device {
 
     /// Queries this `Device` for information requested by the generic parameter `Param`.
     /// The associated type `Param::Item` must be defined in accordance with the info parameters
-    /// in `oneapi_rs::info::device` to facilitate returning the type associated with the `Param` parameter.
+    /// in [`oneapi_rs::info::device`](`crate::info::device`) to facilitate returning the type
+    /// associated with the `Param` parameter.
     pub fn get_info<T: DeviceInfo>(&self) -> T::Item {
         T::get_item(self)
     }
