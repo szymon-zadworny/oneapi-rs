@@ -14,6 +14,7 @@ pub trait PlatformInfo {
     fn get_item(platform: &Platform) -> Self::Item;
 }
 
+/// Returns a backend-defined platform version.
 pub struct Version;
 impl PlatformInfo for Version {
     type Item = String;
@@ -22,6 +23,7 @@ impl PlatformInfo for Version {
     }
 }
 
+/// Returns the name of the platform.
 pub struct Name;
 impl PlatformInfo for Name {
     type Item = String;
@@ -30,6 +32,7 @@ impl PlatformInfo for Name {
     }
 }
 
+/// Returns the name of the vendor providing the platform.
 pub struct Vendor;
 impl PlatformInfo for Vendor {
     type Item = String;
