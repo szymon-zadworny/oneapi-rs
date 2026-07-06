@@ -16,5 +16,6 @@ pub mod ffi {
     extern "C++" {
         include!("oneapi-rs-sys/include/usm.hpp");
         unsafe fn malloc_device(size: usize, queue: &Queue) -> Result<*mut u8>;
+        unsafe fn free(ptr: *mut u8, queue: &Queue);
     }
 }

@@ -15,4 +15,5 @@
 
 namespace sycl_shims::usm {
 std::uint8_t* malloc_device(std::size_t, Queue const &);
+void free(std::uint8_t*, Queue const &);
 } // namespace sycl_shims::usm

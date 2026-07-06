@@ -13,4 +13,8 @@ namespace sycl_shims::usm {
 std::uint8_t* malloc_device(std::size_t size, Queue const & queue) {
   return static_cast<std::uint8_t*>(sycl::malloc_device(size, queue));
 }
+
+void free(std::uint8_t* memory, Queue const & queue) {
+  sycl::free(static_cast<void*>(memory), queue);
+}
 } // namespace sycl_shims::usm
