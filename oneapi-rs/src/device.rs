@@ -12,9 +12,6 @@ use crate::{info::device::DeviceInfo, platform::Platform};
 
 /// The `Device` struct encapsulates a single SYCL device on which kernels can be executed.
 ///
-/// All member functions of the `Device` struct are synchronous and errors are handled by
-/// throwing synchronous SYCL exceptions.
-///
 /// The `Device` struct provides the common reference semantics.
 pub struct Device(pub(crate) cxx::UniquePtr<ffi::Device>);
 
