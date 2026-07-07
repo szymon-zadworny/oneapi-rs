@@ -10,7 +10,8 @@ trait UsmAllocator {
     fn get_queue(&self) -> &Queue;
 }
 
-pub struct DeviceAllocator<'a> {
+#[allow(dead_code)]
+pub(crate) struct DeviceAllocator<'a> {
     queue: &'a Queue
 }
 
