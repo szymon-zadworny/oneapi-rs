@@ -16,6 +16,7 @@ pub mod ffi {
     extern "C++" {
         include!("oneapi-rs-sys/include/usm.hpp");
         unsafe fn aligned_alloc_device(alignment: usize, bytes: usize, queue: &Queue) -> Result<*mut u8>;
+        unsafe fn aligned_alloc_host(alignment: usize, bytes: usize, queue: &Queue) -> Result<*mut u8>;
         unsafe fn free(ptr: *mut u8, queue: &Queue);
     }
 }

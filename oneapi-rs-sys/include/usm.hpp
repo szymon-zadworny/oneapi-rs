@@ -15,5 +15,6 @@
 
 namespace sycl_shims::usm {
 std::uint8_t* aligned_alloc_device(std::size_t alignment, std::size_t bytes, Queue const &);
+std::uint8_t* aligned_alloc_host(std::size_t alignment, std::size_t bytes, Queue const &);
 void free(std::uint8_t*, Queue const &);
 } // namespace sycl_shims::usm
