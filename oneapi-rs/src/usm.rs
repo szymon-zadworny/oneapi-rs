@@ -51,6 +51,26 @@ impl<'a> UsmAllocator for HostAllocator<'a> {
     }
 }
 
+pub struct SharedAllocator<'a> {
+    queue: &'a Queue
+}
+
+impl<'a> From<&'a Queue> for SharedAllocator<'a> {
+    fn from(queue: &'a Queue) -> Self {
+        Self { queue }
+    }
+}
+
+impl<'a> UsmAllocator for SharedAllocator<'a> {
+    unsafe fn alloc(&self, alignment: usize, bytes: usize) -> CxxResult<*mut u8> {
+        unsafe { ffi::aligned_alloc_shared(alignment, bytes, &self.queue.0) }
+    }
+
+    fn get_queue(&self) -> &Queue {
+        &self.queue
+    }
+}
+
 unsafe impl<T> Allocator for T
 where T: UsmAllocator {
     fn allocate(&self, layout: Layout) -> Result<NonNull<[u8]>, AllocError> {
