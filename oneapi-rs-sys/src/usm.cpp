@@ -10,8 +10,8 @@
 #include "oneapi-rs-sys/src/usm-sys.rs.h"
 
 namespace sycl_shims::usm {
-std::uint8_t* malloc_device(std::size_t size, Queue const & queue) {
-  return static_cast<std::uint8_t*>(sycl::malloc_device(size, queue));
+std::uint8_t* aligned_alloc_device(std::size_t alignment, std::size_t bytes, Queue const & queue) {
+  return static_cast<std::uint8_t*>(sycl::aligned_alloc_device(alignment, bytes, queue));
 }
 
 void free(std::uint8_t* memory, Queue const & queue) {

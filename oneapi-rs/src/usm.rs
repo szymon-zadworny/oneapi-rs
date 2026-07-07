@@ -16,7 +16,7 @@ impl<'a> From<&'a Queue> for DeviceAllocator<'a> {
 
 unsafe impl<'a> Allocator for DeviceAllocator<'a> {
     fn allocate(&self, layout: Layout) -> Result<NonNull<[u8]>, AllocError> {
-        let ptr = unsafe { ffi::malloc_device(layout.size(), &self.queue.0) }
+        let ptr = unsafe { ffi::aligned_alloc_device(layout.align(), layout.size(), &self.queue.0) }
             .map_err(|e| AllocError::Other(e.to_string()))?;
 
         let ptr = NonNull::new(ptr).ok_or(AllocError::NoMemory)?;
