@@ -15,11 +15,13 @@ use std::{alloc::Layout, marker::PhantomData, ptr::NonNull};
 
 type CxxResult<T> = cxx::core::result::Result<T, cxx::Exception>;
 
+/// An instance of a USM allocator.
 pub struct UsmAllocator<'a, T: UsmAllocatorKind> {
     queue: &'a Queue,
     _kind: PhantomData<T>
 }
 
+/// A marker trait for USM allocators.
 pub trait UsmAlloc : Allocator {}
 
 impl<'a, T: UsmAllocatorKind> UsmAlloc for UsmAllocator<'a, T> {}
@@ -53,6 +55,8 @@ unsafe impl<T: UsmAllocatorKind> Allocator for UsmAllocator<'_, T> {
     }
 }
 
+/// An allocator for Device-side buffers
+/// Safety: memory allocated by this allocator cannot be accessed on the host side
 #[allow(dead_code)]
 pub(crate) struct DeviceAllocator;
 
@@ -62,6 +66,7 @@ impl UsmAllocatorKind for DeviceAllocator {
     }
 }
 
+/// An allocator for Host-side buffers
 pub struct HostAllocator;
 
 impl UsmAllocatorKind for HostAllocator {
@@ -70,6 +75,7 @@ impl UsmAllocatorKind for HostAllocator {
     }
 }
 
+/// An allocator for shared memory buffers
 pub struct SharedAllocator;
 
 impl UsmAllocatorKind for SharedAllocator {
