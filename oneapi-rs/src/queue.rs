@@ -21,16 +21,14 @@ impl Queue {
         Self(ffi::new_queue())
     }
 
-    /// Allocates memory and creates a host-side [`Buffer`](crate::buffer::Buffer) that can store
-    /// an array of T.
+    /// Allocates memory and creates a host-side [`Buffer`] that can store an array of T.
     /// Safety: the buffer contents are uninitialized.
     pub unsafe fn alloc_uninit_host<T>(&self, len: usize) -> Buffer<T, UsmAllocator<'_, HostAllocator>> {
         let allocator = UsmAllocator::from(self);
         unsafe { Buffer::new(allocator, len) }
     }
 
-    /// Allocates memory and creates a shared [`Buffer`](crate::buffer::Buffer) that can store
-    /// an array of T.
+    /// Allocates memory and creates a shared [`Buffer`] that can store an array of T.
     /// Safety: the buffer contents are uninitialized.
     pub unsafe fn alloc_uninit_shared<T>(&self, len: usize) -> Buffer<T, UsmAllocator<'_, SharedAllocator>> {
         let allocator = UsmAllocator::from(self);
