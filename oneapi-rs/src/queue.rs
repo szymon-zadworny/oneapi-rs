@@ -47,3 +47,15 @@ impl From<&Device> for Queue {
         Self(ffi::new_queue_from_device(&value.0))
     }
 }
+
+impl From<cxx::UniquePtr<ffi::Queue>> for Queue {
+    fn from(value: cxx::UniquePtr<ffi::Queue>) -> Self {
+        Self(value)
+    }
+}
+
+impl Clone for Queue {
+    fn clone(&self) -> Self {
+        ffi::clone(&self.0).into()
+    }
+}

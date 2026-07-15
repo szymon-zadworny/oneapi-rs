@@ -16,5 +16,6 @@
 namespace sycl_shims::queue {
 std::unique_ptr<Queue> new_queue();
 std::unique_ptr<Queue> new_queue_from_device(Device const &);
+std::unique_ptr<Queue> clone(Queue const &);
 std::unique_ptr<Event> memset(std::unique_ptr<Queue> &, std::uint8_t * ptr, int value, std::size_t num_bytes);
 } // namespace sycl_shims::queue
