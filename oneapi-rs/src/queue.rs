@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 //
 
+use bytemuck::Pod;
 use oneapi_rs_sys::queue::ffi;
 
 use crate::{buffer::Buffer, device::Device, event::Event, usm::{HostAllocator, SharedAllocator, UsmAlloc, UsmAllocator}};
@@ -19,6 +20,24 @@ impl Queue {
     /// Construct a `Queue` based on the device returned from the default selector.
     pub fn new() -> Self {
         Self(ffi::new_queue())
+    }
+
+    /// Allocates zeroed memory and creates a host-side [`Buffer`] that can store an array of T.
+    pub fn alloc_host<T: Pod>(&mut self, len: usize) -> Buffer<T, UsmAllocator<HostAllocator>> {
+        unsafe {
+            let mut buffer = self.alloc_uninit_host(len);
+            self.memset(&mut buffer, 0).wait();
+            buffer
+        }
+    }
+
+    /// Allocates zeroed memory and creates a shared [`Buffer`] that can store an array of T.
+    pub fn alloc_shared<T: Pod>(&mut self, len: usize) -> Buffer<T, UsmAllocator<SharedAllocator>> {
+        unsafe {
+            let mut buffer = self.alloc_uninit_shared(len);
+            self.memset(&mut buffer, 0).wait();
+            buffer
+        }
     }
 
     /// Allocates memory and creates a host-side [`Buffer`] that can store an array of T.
