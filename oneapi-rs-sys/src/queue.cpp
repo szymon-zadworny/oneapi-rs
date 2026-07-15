@@ -9,11 +9,13 @@
 #include "oneapi-rs-sys/include/queue.hpp"
 #include "oneapi-rs-sys/src/queue-sys.rs.h"
 
+using sycl::property::queue::in_order;
+
 namespace sycl_shims::queue {
 std::unique_ptr<Queue> new_queue() {
-  return std::make_unique<Queue>(sycl::queue());
+  return std::make_unique<Queue>(sycl::queue({in_order()}));
 }
 std::unique_ptr<Queue> new_queue_from_device(Device const & device) {
-  return std::make_unique<Queue>(sycl::queue(device));
+  return std::make_unique<Queue>(sycl::queue(device, {in_order()}));
 }
 } // namespace sycl_shims::queue
