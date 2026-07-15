@@ -46,6 +46,14 @@ impl<T, A: UsmAlloc> Buffer<T, A> {
             allocator,
         }
     }
+
+    pub(crate) fn get_byte_ptr(&mut self) -> *mut u8 {
+        self.data.as_ptr().cast()
+    }
+
+    pub(crate) fn get_byte_size(&self) -> usize {
+        self.layout.size()
+    }
 }
 
 impl<T, A: UsmAlloc> Deref for Buffer<T, A> {

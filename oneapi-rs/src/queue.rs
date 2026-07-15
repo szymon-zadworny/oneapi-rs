@@ -8,7 +8,7 @@
 
 use oneapi_rs_sys::queue::ffi;
 
-use crate::{buffer::Buffer, device::Device, usm::{HostAllocator, SharedAllocator, UsmAllocator}};
+use crate::{buffer::Buffer, device::Device, event::Event, usm::{HostAllocator, SharedAllocator, UsmAlloc, UsmAllocator}};
 
 /// The `Queue` connects a host program to a single device. Programs submit tasks to a device via the
 /// `Queue` and may monitor the `Queue` for completion. A program initiates the task by submitting
@@ -33,6 +33,12 @@ impl Queue {
     pub unsafe fn alloc_uninit_shared<T>(&self, len: usize) -> Buffer<T, UsmAllocator<'_, SharedAllocator>> {
         let allocator = UsmAllocator::from(self);
         unsafe { Buffer::new(allocator, len) }
+    }
+
+    pub unsafe fn memset<T, A: UsmAlloc>(&mut self, buffer: &mut Buffer<T, A>, value: i32) -> Event {
+        let ptr = buffer.get_byte_ptr();
+        let num_bytes = buffer.get_byte_size();
+        unsafe { ffi::memset(&mut self.0, ptr, value, num_bytes) }.into()
     }
 }
 

@@ -18,4 +18,7 @@ std::unique_ptr<Queue> new_queue() {
 std::unique_ptr<Queue> new_queue_from_device(Device const & device) {
   return std::make_unique<Queue>(sycl::queue(device, {in_order()}));
 }
+std::unique_ptr<Event> memset(std::unique_ptr<Queue> & queue, std::uint8_t * ptr, int value, std::size_t num_bytes) {
+  return std::make_unique<Event>(queue->memset(ptr, value, num_bytes));
+}
 } // namespace sycl_shims::queue
