@@ -19,6 +19,7 @@ pub mod ffi {
         type Event = crate::types::ffi::Event;
 
         fn new_queue() -> UniquePtr<Queue>;
+        fn new_queue_immediate() -> UniquePtr<Queue>;
         fn new_queue_from_device(device: &Device) -> UniquePtr<Queue>;
         fn clone(queue: &Queue) -> UniquePtr<Queue>;
         unsafe fn memset(queue: &mut UniquePtr<Queue>, ptr: *mut u8, value: i32, num_bytes: usize) -> UniquePtr<Event>;

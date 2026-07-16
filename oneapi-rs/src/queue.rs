@@ -22,6 +22,11 @@ impl Queue {
         Self(ffi::new_queue())
     }
 
+    /// Construct an immediate `Queue` based on the device returned from the default selector.
+    pub fn new_immediate() -> Self {
+        Self(ffi::new_queue_immediate())
+    }
+
     /// Allocates zeroed memory and creates a host-side [`Buffer`] that can store an array of T.
     pub fn alloc_host<T: Pod>(&mut self, len: usize) -> BufferInProgress<T, UsmAllocator<HostAllocator>> {
         unsafe {

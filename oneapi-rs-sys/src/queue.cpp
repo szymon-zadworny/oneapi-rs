@@ -10,10 +10,19 @@
 #include "oneapi-rs-sys/src/queue-sys.rs.h"
 
 using sycl::property::queue::in_order;
+using sycl::ext::intel::property::queue::immediate_command_list;
 
 namespace sycl_shims::queue {
 std::unique_ptr<Queue> new_queue() {
-  return std::make_unique<Queue>(sycl::queue({in_order()}));
+  return std::make_unique<Queue>(sycl::queue({
+    in_order()
+  }));
+}
+std::unique_ptr<Queue> new_queue_immediate() {
+  return std::make_unique<Queue>(sycl::queue({
+    in_order(),
+    immediate_command_list()
+  }));
 }
 std::unique_ptr<Queue> new_queue_from_device(Device const & device) {
   return std::make_unique<Queue>(sycl::queue(device, {in_order()}));
