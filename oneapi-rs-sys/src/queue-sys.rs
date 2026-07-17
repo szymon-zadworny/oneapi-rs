@@ -23,5 +23,6 @@ pub mod ffi {
         fn new_queue_from_device(device: &Device) -> UniquePtr<Queue>;
         fn clone(queue: &Queue) -> UniquePtr<Queue>;
         unsafe fn memset(queue: &mut UniquePtr<Queue>, ptr: *mut u8, value: i32, num_bytes: usize) -> UniquePtr<Event>;
+        fn barrier(queue: &mut UniquePtr<Queue>) -> UniquePtr<Event>;
     }
 }

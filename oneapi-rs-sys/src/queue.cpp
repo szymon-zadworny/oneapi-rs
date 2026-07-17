@@ -33,4 +33,7 @@ std::unique_ptr<Queue> clone(Queue const & queue) {
 std::unique_ptr<Event> memset(std::unique_ptr<Queue> & queue, std::uint8_t * ptr, int value, std::size_t num_bytes) {
   return std::make_unique<Event>(queue->memset(ptr, value, num_bytes));
 }
+std::unique_ptr<Event> barrier(std::unique_ptr<Queue> & queue) {
+  return std::make_unique<Event>(queue->ext_oneapi_submit_barrier());
+}
 } // namespace sycl_shims::queue
