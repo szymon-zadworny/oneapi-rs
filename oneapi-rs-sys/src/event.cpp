@@ -10,6 +10,8 @@
 
 using sycl::info::event_command_status;
 
+namespace syclintel = sycl::ext::intel;
+
 namespace sycl_shims::event {
 void wait(std::unique_ptr<Event> & event) {
   event->wait();
@@ -30,10 +32,10 @@ EventCommandStatus get_command_execution_status(Event const & event) {
       return EventCommandStatus::Unknown;
   }
 }
-void register_callback(Event const & event, rust::Box<Waker> waker) {
-  sycl::queue().submit([waker = std::move(waker), event](sycl::handler& cgh) {
+void register_callback(std::unique_ptr<Queue> & queue, Event const & event, rust::Box<Waker> waker) {
+  queue->submit([waker = std::move(waker), event](sycl::handler& cgh) {
     cgh.depends_on(event);
-    cgh.host_task([&]() mutable { wake(waker); });
+    cgh.host_task([&]() { wake(waker); });
   });
 }
 } // namespace sycl_shims::event

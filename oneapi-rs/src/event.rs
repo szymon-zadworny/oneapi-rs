@@ -12,7 +12,7 @@ use oneapi_rs_sys::event::ffi;
 
 use pin_project::pin_project;
 
-use crate::info::{EventCommandStatus, event::{CommandExecutionStatus, EventInfo}};
+use crate::{info::{EventCommandStatus, event::{CommandExecutionStatus, EventInfo}}, queue::Queue};
 
 pub struct Event(pub(crate) cxx::UniquePtr<ffi::Event>);
 
@@ -41,7 +41,8 @@ impl Clone for Event {
 #[pin_project]
 pub struct EventFuture {
     event: Event,
-    set_callback: bool
+    set_callback: bool,
+    queue: Queue,
 }
 
 impl Future for EventFuture {
@@ -56,7 +57,7 @@ impl Future for EventFuture {
                 let this = self.project();
                 *this.set_callback = true;
                 let waker = Box::new(cx.waker().clone().into());
-                ffi::register_callback(&this.event.0, waker);
+                ffi::register_callback(&mut this.queue.0, &this.event.0, waker);
             }
             Poll::Pending
         }
@@ -69,6 +70,7 @@ impl IntoFuture for Event {
 
     fn into_future(self) -> Self::IntoFuture {
         EventFuture {
+            queue: Queue::new_immediate(),
             event: self,
             set_callback: false
         }
