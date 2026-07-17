@@ -30,8 +30,17 @@ std::unique_ptr<Queue> new_queue_from_device(Device const & device) {
 std::unique_ptr<Queue> clone(Queue const & queue) {
   return std::make_unique<Queue>(sycl::queue(queue));
 }
-std::unique_ptr<Event> memset(std::unique_ptr<Queue> & queue, std::uint8_t * ptr, int value, std::size_t num_bytes) {
-  return std::make_unique<Event>(queue->memset(ptr, value, num_bytes));
+std::unique_ptr<Event> memset(
+  std::unique_ptr<Queue> & queue,
+  std::uint8_t * ptr,
+  int value,
+  std::size_t num_bytes,
+  rust::Vec<EventPtr> dep_events
+) {
+  std::vector<sycl::event> deps;
+  for (auto&& e: dep_events)
+    deps.push_back(std::move(*e.ptr.release()));
+  return std::make_unique<Event>(queue->memset(ptr, value, num_bytes, deps));
 }
 std::unique_ptr<Event> barrier(std::unique_ptr<Queue> & queue) {
   return std::make_unique<Event>(queue->ext_oneapi_submit_barrier());

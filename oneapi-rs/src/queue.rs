@@ -7,7 +7,7 @@
 //
 
 use bytemuck::Pod;
-use oneapi_rs_sys::queue::ffi;
+use oneapi_rs_sys::{queue::ffi, types::ffi::EventPtr};
 
 use crate::{buffer::{Buffer, BufferInProgress}, device::Device, event::Event, usm::{HostAllocator, SharedAllocator, UsmAlloc, UsmAllocator}};
 
@@ -60,9 +60,22 @@ impl Queue {
     }
 
     pub unsafe fn memset<T, A: UsmAlloc>(&mut self, buffer: &mut Buffer<T, A>, value: i32) -> Event {
+        unsafe { self.memset_with_deps(buffer, value, &[]) }
+    }
+
+    pub unsafe fn memset_with_deps<T, A: UsmAlloc>(
+        &mut self,
+        buffer: &mut Buffer<T, A>,
+        value: i32,
+        dep_events: &[&Event]
+    ) -> Event {
         let ptr = buffer.get_byte_ptr();
         let num_bytes = buffer.get_byte_size();
-        unsafe { ffi::memset(&mut self.0, ptr, value, num_bytes) }.into()
+        let dep_events = dep_events
+            .iter()
+            .map(|e| EventPtr { ptr: (*e).clone().0 })
+            .collect::<Vec<_>>();
+        unsafe { ffi::memset(&mut self.0, ptr, value, num_bytes, dep_events) }.into()
     }
 
     pub fn barrier(&mut self) -> Event {
