@@ -43,7 +43,7 @@ pub struct EventFuture {
     event: Event,
     shared: SharedWaker,
     set_callback: bool,
-    queue: Queue,
+    queue: Option<Queue>,
 }
 
 impl Future for EventFuture {
@@ -55,8 +55,10 @@ impl Future for EventFuture {
         // Set the callback on first Future poll (Futures can't be active until polled)
         if *this.set_callback == false {
             *this.set_callback = true;
+            let mut queue = Queue::new_immediate();
             this.shared.waker.register(cx.waker());
-            unsafe { ffi::register_callback(&mut this.queue.0, &this.event.0, this.shared) };
+            unsafe { ffi::register_callback(&mut queue.0, &this.event.0, this.shared) };
+            this.queue.replace(queue);
 
             // Check the event again to avoid a race condition
             // https://docs.rs/futures/latest/futures/task/struct.AtomicWaker.html#examples
@@ -98,7 +100,7 @@ impl IntoFuture for Event {
             event: self,
             shared: SharedWaker::new(),
             set_callback: false,
-            queue: Queue::new_immediate(),
+            queue: None,
         }
     }
 }
