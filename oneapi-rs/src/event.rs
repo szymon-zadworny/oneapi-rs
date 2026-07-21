@@ -59,15 +59,6 @@ impl Future for EventFuture {
             this.shared.waker.register(cx.waker());
             unsafe { ffi::register_callback(&mut queue.0, &this.event.0, this.shared) };
             this.queue.replace(queue);
-
-            // Check the event again to avoid a race condition
-            // https://docs.rs/futures/latest/futures/task/struct.AtomicWaker.html#examples
-            if this.shared.done.load(Relaxed) {
-                Poll::Ready(())
-            }
-            else {
-                Poll::Pending
-            }
         }
         else {
             // Quick check before registering to avoid wasting time
@@ -77,16 +68,15 @@ impl Future for EventFuture {
 
             // Register the waker if result isn't ready. This is a slow atomic operation
             this.shared.waker.register(cx.waker());
+        }
 
-            // Check the event again to avoid a race condition
-            // https://docs.rs/futures/latest/futures/task/struct.AtomicWaker.html#examples
-            if this.shared.done.load(Relaxed) {
-                Poll::Ready(())
-            }
-            else {
-                Poll::Pending
-            }
-
+        // Check the event again to avoid a race condition
+        // https://docs.rs/futures/latest/futures/task/struct.AtomicWaker.html#examples
+        if this.shared.done.load(Relaxed) {
+            Poll::Ready(())
+        }
+        else {
+            Poll::Pending
         }
     }
 }
