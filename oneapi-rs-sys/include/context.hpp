@@ -22,4 +22,6 @@ struct ContextPtr;
 
 namespace sycl_shims::context {
 std::unique_ptr<Context> new_context(rust::Vec<DevicePtr>);
+std::unique_ptr<SourceKernelBundle> create_kernel_bundle_from_source(Context const &ctxt,
+                                                                     rust::Str source);
 } // namespace sycl_shims::context

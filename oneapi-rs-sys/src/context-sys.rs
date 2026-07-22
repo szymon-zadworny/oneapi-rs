@@ -20,6 +20,11 @@ pub mod ffi {
         #[namespace = "sycl_shims"]
         type Context = crate::types::ffi::Context;
 
+        #[namespace = "sycl_shims"]
+        type SourceKernelBundle = crate::types::ffi::SourceKernelBundle;
+
         fn new_context(devices: Vec<DevicePtr>) -> UniquePtr<Context>;
+        fn create_kernel_bundle_from_source(ctxt: &Context, source: &str)
+            -> UniquePtr<SourceKernelBundle>;
     }
 }

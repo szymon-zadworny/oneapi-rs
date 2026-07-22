@@ -16,5 +16,6 @@ using Platform = sycl::platform;
 using Queue = sycl::queue;
 using Event = sycl::event;
 using Context = sycl::context;
+using SourceKernelBundle = sycl::kernel_bundle<sycl::bundle_state::ext_oneapi_source>;
 } // namespace sycl_shims
 

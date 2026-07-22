@@ -9,11 +9,22 @@
 #include "oneapi-rs-sys/include/context.hpp"
 #include "oneapi-rs-sys/src/context-sys.rs.h"
 
+namespace syclexp = sycl::ext::oneapi::experimental;
+
 namespace sycl_shims::context {
 std::unique_ptr<Context> new_context(rust::Vec<DevicePtr> devices) {
   std::vector<sycl::device> raw_devices;
   for (auto&& d: devices)
     raw_devices.push_back(std::move(*d.ptr.release()));
   return std::make_unique<Context>(raw_devices);
+}
+
+std::unique_ptr<SourceKernelBundle> create_kernel_bundle_from_source(Context const &ctxt,
+                                                                     rust::Str source) {
+    return std::make_unique<SourceKernelBundle>(syclexp::create_kernel_bundle_from_source(
+      ctxt,
+      syclexp::source_language::sycl,
+      std::string(source)
+    ));
 }
 } // namespace sycl_shims::context
