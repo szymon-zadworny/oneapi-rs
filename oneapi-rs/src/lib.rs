@@ -14,4 +14,5 @@ pub mod platform;
 pub mod queue;
 pub mod usm;
 pub mod context;
+pub mod kernel_bundle;
 
