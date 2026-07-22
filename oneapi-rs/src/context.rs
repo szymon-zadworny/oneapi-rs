@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 //
 
-use oneapi_rs_sys::{context::ffi, types::ffi::DevicePtr};
+use oneapi_rs_sys::{kernel_bundle, context::ffi, types::ffi::DevicePtr};
 
 use crate::{device::Device, kernel_bundle::SourceKernelBundle};
 
@@ -31,6 +31,6 @@ impl Context {
     }
 
     pub fn create_kernel_bundle_from_source(&self, source: &str) -> SourceKernelBundle {
-        ffi::create_kernel_bundle_from_source(&self.0, source).into()
+        kernel_bundle::ffi::create_kernel_bundle_from_source(&self.0, source).into()
     }
 }

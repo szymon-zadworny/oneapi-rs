@@ -26,3 +26,7 @@ pub mod event;
 
 #[path = "context-sys.rs"]
 pub mod context;
+
+#[path = "kernel-bundle-sys.rs"]
+pub mod kernel_bundle;
+

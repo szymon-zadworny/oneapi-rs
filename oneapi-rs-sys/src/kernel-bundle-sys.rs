@@ -6,20 +6,17 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 //
 
-#[cxx::bridge(namespace = "sycl_shims::context")]
+#[cxx::bridge(namespace = "sycl_shims::kernel_bundle")]
 pub mod ffi {
-    #[namespace = "sycl_shims"]
-    extern "C++" {
-        include!("oneapi-rs-sys/src/types-sys.rs.h");
-        type DevicePtr = crate::types::ffi::DevicePtr;
-    }
-
     unsafe extern "C++" {
-        include!("oneapi-rs-sys/include/context.hpp");
+        include!("oneapi-rs-sys/include/kernel-bundle.hpp");
 
         #[namespace = "sycl_shims"]
         type Context = crate::types::ffi::Context;
 
-        fn new_context(devices: Vec<DevicePtr>) -> UniquePtr<Context>;
+        #[namespace = "sycl_shims"]
+        type SourceKernelBundle = crate::types::ffi::SourceKernelBundle;
+        fn create_kernel_bundle_from_source(ctxt: &Context, source: &str)
+            -> UniquePtr<SourceKernelBundle>;
     }
 }

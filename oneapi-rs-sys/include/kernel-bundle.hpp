@@ -15,10 +15,7 @@
 #include "rust/cxx.h"
 #include "oneapi-rs-sys/include/types.hpp"
 
-namespace sycl_shims {
-struct DevicePtr;
-} // namespace sycl_shims
-
-namespace sycl_shims::context {
-std::unique_ptr<Context> new_context(rust::Vec<DevicePtr>);
-} // namespace sycl_shims::context
+namespace sycl_shims::kernel_bundle {
+std::unique_ptr<SourceKernelBundle> create_kernel_bundle_from_source(Context const &ctxt,
+                                                                     rust::Str source);
+} // namespace sycl_shims::kernel_bundle
