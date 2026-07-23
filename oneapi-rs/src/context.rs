@@ -8,7 +8,7 @@
 
 use oneapi_rs_sys::{context::ffi, kernel_bundle, types::ffi::DevicePtr};
 
-use crate::{device::Device, kernel_bundle::SourceKernelBundle};
+use crate::{device::Device, kernel::SourceKernelBundle};
 
 /// A context represents the runtime data structures and state required by a SYCL backend API
 /// to interact with a group of devices associated with a platform.

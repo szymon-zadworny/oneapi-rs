@@ -20,7 +20,7 @@ use pin_project::pin_project;
 
 use crate::{
     event::{Event, EventFuture},
-    kernel_bundle::KernelArgument,
+    kernel::KernelArgument,
     usm::UsmAlloc,
 };
 
