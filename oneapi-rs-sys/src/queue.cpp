@@ -12,6 +12,8 @@
 using sycl::ext::intel::property::queue::immediate_command_list;
 using sycl::property::queue::in_order;
 
+namespace syclexp = sycl::ext::oneapi::experimental;
+
 namespace sycl_shims::queue {
 std::unique_ptr<Queue> new_queue() {
   return std::make_unique<Queue>(sycl::queue({in_order()}));
@@ -52,4 +54,13 @@ std::unique_ptr<Event> barrier(std::unique_ptr<Queue> &queue,
 }
 
 void wait(std::unique_ptr<Queue> &queue) { queue->wait(); }
+
+std::unique_ptr<Event> launch(std::unique_ptr<Queue> queue, Kernel const &kernel, rust::Slice<rust::slice<std::uint8_t const> const> args) {
+  return std::make_unique<Event>(queue->submit([&](sycl::handler &cgh) {
+    for (std::size_t i = 0; i < args.size(); ++i)
+      cgh.set_arg(i, syclexp::raw_kernel_arg(args[i].data(), args[i].size()));
+    
+    cgh.parallel_for(sycl::nd_range{{1024}, {16}}, kernel);
+  }));
+}
 } // namespace sycl_shims::queue

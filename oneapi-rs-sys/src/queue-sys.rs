@@ -42,5 +42,6 @@ pub mod ffi {
         ) -> UniquePtr<Event>;
         fn barrier(queue: &mut UniquePtr<Queue>, dep_events: Vec<EventPtr>) -> UniquePtr<Event>;
         fn wait(queue: &mut UniquePtr<Queue>);
+        unsafe fn launch(queue: &mut UniquePtr<Queue>, kernel: &Kernel, args: &[&[u8]]) -> UniquePtr<Event>;
     }
 }
