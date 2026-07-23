@@ -54,3 +54,7 @@ unsafe impl<T: Pod> KernelArgument for T {
         bytemuck::bytes_of(self)
     }
 }
+
+pub unsafe trait KernelArgumentList<const ARGC: usize> {
+    unsafe fn as_raw_arg_list(&self) -> [&[u8]; ARGC];
+}

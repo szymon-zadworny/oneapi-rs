@@ -141,9 +141,11 @@ impl<T, A: UsmAlloc> IntoFuture for EnqueuedBuffer<T, A> {
 
 unsafe impl<T: Pod, A: UsmAlloc> KernelArgument for Buffer<T, A> {
     unsafe fn as_raw_arg(&self) -> &[u8] {
+        let data_ptr: *const NonNull<_> = &self.data;
+        let cast_ptr = data_ptr as *const u8;
         unsafe {
             slice::from_raw_parts(
-                self.data.as_ptr() as *mut u8, 
+                cast_ptr, 
                 std::mem::size_of::<*mut u8>()
             )
         }
