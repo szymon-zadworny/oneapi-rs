@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 //
 
-use oneapi_rs::{buffer::Buffer, kernel_bundle::{KernelArgument, KernelArgumentList}, queue::Queue, usm::{SharedAllocator, UsmAllocator}};
+use oneapi_rs::{buffer::Buffer, kernel_bundle::{KernelArgument, KernelArgumentList, NdRange, Range}, queue::Queue, usm::{SharedAllocator, UsmAllocator}};
 
 static IOTA_SRC: &str = r#"
 #include <sycl/sycl.hpp>
@@ -44,7 +44,7 @@ fn main() {
         .build()
         .get_kernel("iota");
 
-    unsafe { queue.launch(&kernel, IotaArgs { start: 3.14, buffer: &mut buffer }) }.wait();
+    unsafe { queue.launch(NdRange::new([1024], [16]), &kernel, IotaArgs { start: 3.14, buffer: &mut buffer }) }.wait();
 
     for e in buffer.iter() {
         print!("{e} ");

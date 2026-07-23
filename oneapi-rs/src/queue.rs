@@ -10,7 +10,12 @@ use bytemuck::Pod;
 use oneapi_rs_sys::{queue::ffi, types::ffi::EventPtr};
 
 use crate::{
-    buffer::{Buffer, EnqueuedBuffer}, context::Context, device::Device, event::Event, kernel_bundle::{Kernel, KernelArgumentList}, usm::{HostAllocator, SharedAllocator, UsmAlloc, UsmAllocator},
+    buffer::{Buffer, EnqueuedBuffer},
+    context::Context,
+    device::Device,
+    event::Event,
+    kernel_bundle::{Kernel, KernelArgumentList, NdRange, ValidDimension},
+    usm::{HostAllocator, SharedAllocator, UsmAlloc, UsmAllocator},
 };
 
 /// The `Queue` connects a host program to a single device. Programs submit tasks to a device via the
@@ -128,8 +133,16 @@ impl Queue {
         ffi::wait(&mut self.0);
     }
 
-    pub unsafe fn launch<const ARGC: usize>(&mut self, kernel: &Kernel, args: impl KernelArgumentList<ARGC>) -> Event {
-        unsafe { ffi::launch(&mut self.0, &kernel.0, &args.as_raw_arg_list()) }.into()
+    pub unsafe fn launch<const ARGC: usize, const DIMENSIONS: usize>(
+        &mut self,
+        nd_range: NdRange<DIMENSIONS>,
+        kernel: &Kernel,
+        args: impl KernelArgumentList<ARGC>,
+    ) -> Event
+    where
+        NdRange<DIMENSIONS>: ValidDimension,
+    {
+        unsafe { nd_range.launch(self, kernel, args) }
     }
 }
 
