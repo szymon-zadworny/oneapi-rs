@@ -12,6 +12,8 @@ pub mod ffi {
     extern "C++" {
         include!("oneapi-rs-sys/src/types-sys.rs.h");
         type EventPtr = crate::types::ffi::EventPtr;
+        type Range2 = crate::types::ffi::Range2;
+        type Range3 = crate::types::ffi::Range3;
     }
 
     unsafe extern "C++" {
@@ -33,6 +35,7 @@ pub mod ffi {
         fn new_queue_from_device(device: &Device) -> UniquePtr<Queue>;
         fn get_context(queue: &Queue) -> UniquePtr<Context>;
         fn clone(queue: &Queue) -> UniquePtr<Queue>;
+
         unsafe fn memset(
             queue: &mut UniquePtr<Queue>,
             ptr: *mut u8,
@@ -40,8 +43,32 @@ pub mod ffi {
             num_bytes: usize,
             dep_events: Vec<EventPtr>,
         ) -> UniquePtr<Event>;
+
         fn barrier(queue: &mut UniquePtr<Queue>, dep_events: Vec<EventPtr>) -> UniquePtr<Event>;
         fn wait(queue: &mut UniquePtr<Queue>);
-        unsafe fn launch(queue: &mut UniquePtr<Queue>, kernel: &Kernel, args: &[&[u8]]) -> UniquePtr<Event>;
+
+        unsafe fn launch_1d(
+            queue: &mut UniquePtr<Queue>,
+            global_size: u64,
+            local_size: u64,
+            kernel: &Kernel,
+            args: &[&[u8]],
+        ) -> UniquePtr<Event>;
+
+        unsafe fn launch_2d(
+            queue: &mut UniquePtr<Queue>,
+            global_size: Range2,
+            local_size: Range2,
+            kernel: &Kernel,
+            args: &[&[u8]],
+        ) -> UniquePtr<Event>;
+
+        unsafe fn launch_3d(
+            queue: &mut UniquePtr<Queue>,
+            global_size: Range3,
+            local_size: Range3,
+            kernel: &Kernel,
+            args: &[&[u8]],
+        ) -> UniquePtr<Event>;
     }
 }

@@ -77,6 +77,17 @@ pub mod ffi {
         Complete,
         Unknown,
     }
+    
+    struct Range2 {
+        x: u64,
+        y: u64,
+    }
+
+    struct Range3 {
+        x: u64,
+        y: u64,
+        z: u64,
+    }
 
     impl UniquePtr<Device> {}
     impl UniquePtr<Platform> {}

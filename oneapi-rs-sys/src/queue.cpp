@@ -55,12 +55,44 @@ std::unique_ptr<Event> barrier(std::unique_ptr<Queue> &queue,
 
 void wait(std::unique_ptr<Queue> &queue) { queue->wait(); }
 
-std::unique_ptr<Event> launch(std::unique_ptr<Queue> &queue, Kernel const &kernel, rust::Slice<rust::slice<std::uint8_t const> const> args) {
+template <int Dimensions>
+std::unique_ptr<Event>
+launch(std::unique_ptr<Queue> &queue, sycl::nd_range<Dimensions> nd_range,
+       Kernel const &kernel,
+       rust::Slice<rust::slice<std::uint8_t const> const> args) {
   return std::make_unique<Event>(queue->submit([&](sycl::handler &cgh) {
     for (std::size_t i = 0; i < args.size(); ++i)
       cgh.set_arg(i, syclexp::raw_kernel_arg(args[i].data(), args[i].size()));
-    
-    cgh.parallel_for(sycl::nd_range{{1024}, {16}}, kernel);
+
+    cgh.parallel_for(nd_range, kernel);
   }));
+}
+
+std::unique_ptr<Event>
+launch_1d(std::unique_ptr<Queue> &queue, unsigned long global_size,
+          unsigned long local_size, Kernel const &kernel,
+          rust::Slice<rust::slice<std::uint8_t const> const> args) {
+  return launch(queue, sycl::nd_range<1>{{global_size}, {local_size}}, kernel,
+                args);
+}
+
+std::unique_ptr<Event>
+launch_2d(std::unique_ptr<Queue> &queue, Range2 global_size, Range2 local_size,
+          Kernel const &kernel,
+          rust::Slice<rust::slice<std::uint8_t const> const> args) {
+  return launch(queue,
+                sycl::nd_range<2>{{global_size.x, global_size.y},
+                                  {local_size.x, local_size.y}},
+                kernel, args);
+}
+
+std::unique_ptr<Event>
+launch_3d(std::unique_ptr<Queue> &queue, Range3 global_size, Range3 local_size,
+          Kernel const &kernel,
+          rust::Slice<rust::slice<std::uint8_t const> const> args) {
+  return launch(queue,
+                sycl::nd_range<3>{{global_size.x, global_size.y, global_size.z},
+                                  {local_size.x, local_size.y, local_size.z}},
+                kernel, args);
 }
 } // namespace sycl_shims::queue

@@ -15,6 +15,8 @@
 
 namespace sycl_shims {
 struct EventPtr;
+struct Range2;
+struct Range3;
 } // namespace sycl_shims
 
 namespace sycl_shims::queue {
@@ -28,5 +30,16 @@ std::unique_ptr<Event> memset(std::unique_ptr<Queue> &, std::uint8_t *ptr,
                               rust::Vec<EventPtr>);
 std::unique_ptr<Event> barrier(std::unique_ptr<Queue> &, rust::Vec<EventPtr>);
 void wait(std::unique_ptr<Queue> &);
-std::unique_ptr<Event> launch(std::unique_ptr<Queue> &, Kernel const &, rust::Slice<rust::slice<std::uint8_t const> const> args);
+
+std::unique_ptr<Event>
+launch_1d(std::unique_ptr<Queue> &, unsigned long global_size, unsigned long local_size,
+       Kernel const &, rust::Slice<rust::slice<std::uint8_t const> const> args);
+
+std::unique_ptr<Event>
+launch_2d(std::unique_ptr<Queue> &, Range2 global_size, Range2 local_size,
+       Kernel const &, rust::Slice<rust::slice<std::uint8_t const> const> args);
+
+std::unique_ptr<Event>
+launch_3d(std::unique_ptr<Queue> &, Range3 global_size, Range3 local_size,
+       Kernel const &, rust::Slice<rust::slice<std::uint8_t const> const> args);
 } // namespace sycl_shims::queue
