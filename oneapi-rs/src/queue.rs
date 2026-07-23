@@ -14,7 +14,8 @@ use crate::{
     context::Context,
     device::Device,
     event::Event,
-    kernel::{Kernel, KernelArgumentList, NdRange, ValidDimension},
+    kernel::{Kernel, KernelArgumentList},
+    range::{NdRange, ValidDimension},
     usm::{HostAllocator, SharedAllocator, UsmAlloc, UsmAllocator},
 };
 

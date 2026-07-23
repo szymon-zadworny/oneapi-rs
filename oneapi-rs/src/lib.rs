@@ -14,4 +14,5 @@ pub mod info;
 pub mod kernel;
 pub mod platform;
 pub mod queue;
+pub mod range;
 pub mod usm;

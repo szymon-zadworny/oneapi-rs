@@ -8,8 +8,9 @@
 
 use oneapi_rs::{
     buffer::Buffer,
-    kernel::{KernelArgument, KernelArgumentList, NdRange},
+    kernel::{KernelArgument, KernelArgumentList},
     queue::Queue,
+    range::NdRange,
     usm::{SharedAllocator, UsmAllocator},
 };
 
