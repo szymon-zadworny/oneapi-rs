@@ -12,20 +12,21 @@
 namespace syclexp = sycl::ext::oneapi::experimental;
 
 namespace sycl_shims::kernel_bundle {
-std::unique_ptr<SourceKernelBundle> create_kernel_bundle_from_source(Context const &ctxt,
-                                                                     rust::Str source) {
-    return std::make_unique<SourceKernelBundle>(syclexp::create_kernel_bundle_from_source(
-      ctxt,
-      syclexp::source_language::sycl,
-      std::string(source)
-    ));
+std::unique_ptr<SourceKernelBundle>
+create_kernel_bundle_from_source(Context const &ctxt, rust::Str source) {
+  return std::make_unique<SourceKernelBundle>(
+      syclexp::create_kernel_bundle_from_source(
+          ctxt, syclexp::source_language::sycl, std::string(source)));
 }
 
-std::unique_ptr<ExecutableKernelBundle> build(std::unique_ptr<SourceKernelBundle> &source) {
+std::unique_ptr<ExecutableKernelBundle>
+build(std::unique_ptr<SourceKernelBundle> &source) {
   return std::make_unique<ExecutableKernelBundle>(syclexp::build(*source));
 }
 
-std::unique_ptr<Kernel> get_kernel(std::unique_ptr<ExecutableKernelBundle> &bundle, rust::Str name) {
-  return std::make_unique<Kernel>(bundle->ext_oneapi_get_kernel(static_cast<std::string const&>(name)));
+std::unique_ptr<Kernel>
+get_kernel(std::unique_ptr<ExecutableKernelBundle> &bundle, rust::Str name) {
+  return std::make_unique<Kernel>(
+      bundle->ext_oneapi_get_kernel(static_cast<std::string const &>(name)));
 }
 } // namespace sycl_shims::kernel_bundle

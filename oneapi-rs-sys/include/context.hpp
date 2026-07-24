@@ -12,8 +12,8 @@
 
 #include <sycl/sycl.hpp>
 
-#include "rust/cxx.h"
 #include "oneapi-rs-sys/include/types.hpp"
+#include "rust/cxx.h"
 
 namespace sycl_shims {
 struct DevicePtr;

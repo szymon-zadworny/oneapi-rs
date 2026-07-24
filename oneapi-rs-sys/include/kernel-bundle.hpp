@@ -12,12 +12,14 @@
 
 #include <sycl/sycl.hpp>
 
-#include "rust/cxx.h"
 #include "oneapi-rs-sys/include/types.hpp"
+#include "rust/cxx.h"
 
 namespace sycl_shims::kernel_bundle {
-std::unique_ptr<SourceKernelBundle> create_kernel_bundle_from_source(Context const &ctxt,
-                                                                     rust::Str source);
-std::unique_ptr<ExecutableKernelBundle> build(std::unique_ptr<SourceKernelBundle> &source);
-std::unique_ptr<Kernel> get_kernel(std::unique_ptr<ExecutableKernelBundle> &, rust::Str);
+std::unique_ptr<SourceKernelBundle>
+create_kernel_bundle_from_source(Context const &ctxt, rust::Str source);
+std::unique_ptr<ExecutableKernelBundle>
+build(std::unique_ptr<SourceKernelBundle> &source);
+std::unique_ptr<Kernel> get_kernel(std::unique_ptr<ExecutableKernelBundle> &,
+                                   rust::Str);
 } // namespace sycl_shims::kernel_bundle
