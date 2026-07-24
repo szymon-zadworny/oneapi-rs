@@ -9,6 +9,7 @@
 use bytemuck::Pod;
 use oneapi_rs_sys::{kernel_bundle::ffi, types};
 
+/// A kernel bundle which stores loaded SYCL source code.
 pub struct SourceKernelBundle(pub(crate) cxx::UniquePtr<types::ffi::SourceKernelBundle>);
 
 impl From<cxx::UniquePtr<types::ffi::SourceKernelBundle>> for SourceKernelBundle {
@@ -23,6 +24,7 @@ impl SourceKernelBundle {
     }
 }
 
+/// A kernel bundle which stores compiled SYCL kernels.
 pub struct ExecutableKernelBundle(pub(crate) cxx::UniquePtr<types::ffi::ExecutableKernelBundle>);
 
 impl From<cxx::UniquePtr<types::ffi::ExecutableKernelBundle>> for ExecutableKernelBundle {
@@ -37,6 +39,7 @@ impl ExecutableKernelBundle {
     }
 }
 
+/// An executable SYCL kernel.
 pub struct Kernel(pub(crate) cxx::UniquePtr<types::ffi::Kernel>);
 
 impl From<cxx::UniquePtr<types::ffi::Kernel>> for Kernel {
@@ -45,6 +48,7 @@ impl From<cxx::UniquePtr<types::ffi::Kernel>> for Kernel {
     }
 }
 
+/// Types which can be passed as SYCL kernel arguments.
 pub unsafe trait KernelArgument {
     unsafe fn as_raw_arg(&self) -> &[u8];
 }
@@ -55,6 +59,7 @@ unsafe impl<T: Pod> KernelArgument for T {
     }
 }
 
+/// Types which describe an argument list for a SYCL kernel.
 pub unsafe trait KernelArgumentList<const ARGC: usize> {
     unsafe fn as_raw_arg_list(&self) -> [&[u8]; ARGC];
 }
